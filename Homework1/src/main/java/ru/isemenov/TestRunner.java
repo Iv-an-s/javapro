@@ -52,14 +52,12 @@ public class TestRunner {
 
     private static Object createInstance(Class<?> c) {
         Constructor<?> con;
-        try {
-            con = c.getConstructor();
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Ошибка при получении конструктора без аргументов", e);
-        }
         Object object;
         try {
+            con = c.getConstructor();
             object = con.newInstance();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Ошибка при получении конструктора без аргументов", e);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException("Ошибка при создании объекта", e);
         }
@@ -80,28 +78,24 @@ public class TestRunner {
         }
     }
 
-    private static void runMethodWithParams(Method method, Object object) {
+    private static void runMethodWithParams(Method method, Object object) throws InvocationTargetException, IllegalAccessException {
         CsvSource annotation = method.getAnnotation(CsvSource.class);
         String[] params = annotation.value().split(",");
         int firstParam = Integer.parseInt(params[0].trim());
         String secondParam = params[1].trim();
         int thirdParam = Integer.parseInt(params[2].trim());
         boolean fourthParam = Boolean.parseBoolean(params[3].trim().toLowerCase());
-        try {
-            method.invoke(object, firstParam, secondParam, thirdParam, fourthParam);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Ошибка вызова метода с параметрами " + method.getName(), e);
-        }
+
+        method.invoke(object, firstParam, secondParam, thirdParam, fourthParam);
     }
 
     private static Method checkAfterSuiteAnnotatedMethodIsAloneAndStatic(Method[] methods) {
         Method result = null;
-        boolean isAnnotatedAfterSuiteMethodPresent = false;
+        int count = 0;
         for (Method method : methods) {
             if (method.isAnnotationPresent(AfterSuite.class)) {
-                if (!isAnnotatedAfterSuiteMethodPresent) {
-                    isAnnotatedAfterSuiteMethodPresent = true;
-                } else {
+                count++;
+                if (count > 1) {
                     throw new RuntimeException("Методов с аннотацией @AfterSuite не может быть больше одного");
                 }
                 if (!Modifier.isStatic(method.getModifiers())) {
@@ -115,12 +109,11 @@ public class TestRunner {
 
     private static Method checkBeforeSuiteAnnotatedMethodIsAloneAndStatic(Method[] methods) {
         Method result = null;
-        boolean isAnnotatedBeforeSuiteMethodPresent = false;
+        int count = 0;
         for (Method method : methods) {
             if (method.isAnnotationPresent(BeforeSuite.class)) {
-                if (!isAnnotatedBeforeSuiteMethodPresent) {
-                    isAnnotatedBeforeSuiteMethodPresent = true;
-                } else {
+                count++;
+                if (count > 1) {
                     throw new RuntimeException("Методов с аннотацией @BeforeSuite не может быть больше одного");
                 }
                 if (!Modifier.isStatic(method.getModifiers())) {
