@@ -2,7 +2,7 @@ package ru.isemenov.homework3;
 
 public class TaskRunner {
     public static void main(String[] args) {
-        MyThreadPool threadPool = new MyThreadPool(4);
+        CustomThreadPool threadPool = new CustomThreadPool(4);
 
         for (int i = 0; i < 10; i++) {
             final int taskNumber = i;
