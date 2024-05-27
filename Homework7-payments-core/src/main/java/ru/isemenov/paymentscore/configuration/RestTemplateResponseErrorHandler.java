@@ -25,17 +25,17 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         if (HttpStatus.NOT_FOUND.equals(response.getStatusCode())) {
             ObjectMapper objectMapper = new ObjectMapper();
             ExecutorErrorDto executorErrorDto = objectMapper.readValue(response.getBody(), ExecutorErrorDto.class);
-            throw new ResourceNotFoundException(executorErrorDto.getReason());
+            throw new ResourceNotFoundException(executorErrorDto.reason());
         }
         if (HttpStatus.PAYLOAD_TOO_LARGE.equals(response.getStatusCode())) {
             ObjectMapper objectMapper = new ObjectMapper();
             ExecutorErrorDto executorErrorDto = objectMapper.readValue(response.getBody(), ExecutorErrorDto.class);
-            throw new ResourceNotEnoughException(executorErrorDto.getReason());
+            throw new ResourceNotEnoughException(executorErrorDto.reason());
         }
         if (response.getStatusCode().is4xxClientError()) {
             ObjectMapper objectMapper = new ObjectMapper();
             ExecutorErrorDto executorErrorDto = objectMapper.readValue(response.getBody(), ExecutorErrorDto.class);
-            throw new RuntimeException(executorErrorDto.getReason());
+            throw new RuntimeException(executorErrorDto.reason());
         }
     }
 }

@@ -2,7 +2,6 @@ package ru.isemenov.productscore.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "orders")
-@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
