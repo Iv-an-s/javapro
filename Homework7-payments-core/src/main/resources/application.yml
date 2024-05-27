@@ -1,0 +1,15 @@
+server:
+  port: 8181
+  servlet:
+    context-path: /javapro/payments-app/v1
+
+integrations:
+  executors:
+    payments-executor-client:
+      url: "http://localhost:8189/javapro/products-app/v1"
+      getProductsMethodName: "/product/products"
+      getProductByIdMethodName: "/product/"
+      getUserInfoByUserIdMethodName: "/user/"
+      executePaymentMethodName: "/order"
+      connect-timeout: 1s
+      read-timeout: 30s
