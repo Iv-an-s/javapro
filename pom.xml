@@ -18,6 +18,8 @@
 		<module>Homework5</module>
 		<module>Homework6-products-core</module>
 		<module>Homework6-payments-core</module>
+		<module>Homework7-payments-core</module>
+		<module>Homework7-products-core</module>
 	</modules>
 
 	<properties>
